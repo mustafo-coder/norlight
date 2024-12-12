@@ -17,3 +17,24 @@
         @apply border-second border text-second hover:bg-second hover:text-white;
     }
 }
+
+.open{
+    display: flex !important;
+    animation: open .5s ease forwards;
+}
+@keyframes open {
+    from{
+        transform: translateX(100%);
+    }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

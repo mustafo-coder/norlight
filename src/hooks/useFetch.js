@@ -21,7 +21,6 @@ const useFetch = (url) => {
     };
 
     fetchHandle();
-
   }, [url]);
 
   return { data, error, loading };

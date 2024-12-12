@@ -1,8 +1,8 @@
 import React from "react";
 
-const SearchForm = () => {
+const SearchForm = ({classes}) => {
   return (
-    <form className="w-full flex gap-3 items-center justify-center">
+    <form className={`w-full flex gap-3 items-center justify-center ${classes}`}>
       <button className="btn btn-primary flex-shrink-0">
         <i className="fa-solid fa-bars-staggered rotate-180"></i>
         <span>Каталог</span>

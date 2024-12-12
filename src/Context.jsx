@@ -3,6 +3,7 @@ import { createContext, useReducer } from "react";
 const initialState = {
   products: null,
   wishlist: null,
+  carts: [],
 };
 
 export const MyContext = createContext();
@@ -18,8 +19,16 @@ const reducer = (state = initialState, action) => {
       } else {
         return { ...state, wishlist: [payload] };
       }
+    case "SET_WISHLIST_FROM_LS":
+      return {...state, wishlist: payload}
     case "REMOVE_WISHLIST":
       return {...state, wishlist: state.wishlist.filter(w => w.id != payload)}
+    case "REMOVE_CARTS":
+      return {...state, carts: state.carts.filter(c => c.id != payload)}
+    case "SET_CART":
+      return {...state, carts: [...state.carts, payload]}
+    case "SET_CARTS_FROM_LS":
+      return {...state, carts: payload}
     default:
       return { state };
   }

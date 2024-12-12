@@ -16,7 +16,10 @@ const WishListCard = ({ product }) => {
       dispatch({ type: "SET_WISHLIST", payload: product });
     }
   };
-
+  useEffect(() => {
+    localStorage.setItem("liked", JSON.stringify(state.wishlist));
+  }, [state.wishlist]);
+  
   useEffect(() => {
     if (state.wishlist) {
       const wish = state.wishlist.find((p) => p.id == product.id);
@@ -53,10 +56,11 @@ const WishListCard = ({ product }) => {
             className="px-4 py-2 text-2xl"
             onClick={() => favHandler(product.id)}
           >
-            {isLiked ? 
-            <i className="fa fa-heart text-red-500"></i>:
-            <i className="fa-regular fa-heart"></i>
-            }
+            {isLiked ? (
+              <i className="fa fa-heart text-red-500"></i>
+            ) : (
+              <i className="fa-regular fa-heart"></i>
+            )}
           </button>
         </div>
       </div>

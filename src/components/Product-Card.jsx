@@ -1,20 +1,35 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../Context";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const array = [1, 2, 3, 4, 5];
   const { state, dispatch } = useContext(MyContext);
   const [isLiked, setIsLiked] = useState(false);
-
-  const favHandler =() => {
-    if(isLiked){
-      dispatch({ type: "REMOVE_WISHLIST", payload: product.id })
-      setIsLiked(false)
-    }else{
-      setIsLiked(true)
-      dispatch({ type: "SET_WISHLIST", payload: product })
+  const [isInCart, setIsInCart] = useState(false);
+  const navigate = useNavigate()
+  const favHandler =async () => {
+    if (isLiked) {
+      await dispatch({ type: "REMOVE_WISHLIST", payload: product.id });
+      setIsLiked(false);
+    } else {
+      setIsLiked(true);
+      await dispatch({ type: "SET_WISHLIST", payload: product });
     }
-  }
+  };
+  
+  useEffect(() => {
+    localStorage.setItem("liked", JSON.stringify(state.wishlist))
+  }, [state.wishlist])
+
+  const cartHandler = () => {
+    if(isInCart){
+      navigate("/carts")
+    }else{
+      dispatch({ type: "SET_CART", payload: product });
+      setIsInCart(true);
+    }
+  };
 
   useEffect(() => {
     if (state.wishlist) {
@@ -24,6 +39,15 @@ const ProductCard = ({ product }) => {
       }
     }
   }, [product, state.wishlist, isLiked]);
+
+  useEffect(() => {
+    if(state.carts){
+      const cart = state.carts.find(p => p.id == product.id)
+      if(cart){
+        setIsInCart(true)
+      }
+    }
+  }, [product, state.carts, isInCart])
 
   return (
     <div className="w-full relative pb-8 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -70,8 +94,15 @@ const ProductCard = ({ product }) => {
                 <i className="fa-regular fa-heart"></i>
               )}
             </button>
-            <button className="text-white bg-black font-medium rounded-lg px-5 py-2.5 text-center">
-              <i className="fa fa-shopping-cart"></i>
+            <button
+              onClick={cartHandler}
+              className="text-white bg-black font-medium rounded-lg px-5 py-2.5 text-center"
+            >
+              {isInCart ? (
+                "Go to Carts"
+              ) : (
+                <i className="fa fa-shopping-cart"></i>
+              )}
             </button>
           </div>
         </div>
